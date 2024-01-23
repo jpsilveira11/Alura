@@ -1,12 +1,14 @@
 const gap=10;
 let attempts;
 let number;
+let numbers=[];
 
 newGame();
 
 function print(tag,content){
     let element=document.querySelector(tag);
     element.innerHTML=content;
+    responsiveVoice.speak(content, 'Brazilian Portuguese Female', {rate:1.2})
 }
 
 function clearInput(){
@@ -14,8 +16,18 @@ function clearInput(){
     field.value='';
 }
 
-function generateNumber(gap){
-    return parseInt(Math.random()*gap+1);
+function generateNumber(){
+    let number=parseInt(Math.random()*gap+1);
+    let lenghtOfNumbers=numbers.length;
+
+    if (lenghtOfNumbers==3) numbers=[];
+
+    if (numbers.includes(number)) {
+        return generateNumber();
+    }else{
+        numbers.push(number);
+        return number;
+    }
 }
 
 function verificarChute(){
@@ -36,7 +48,7 @@ function verificarChute(){
 }
 
 function newGame(){
-    number=generateNumber(gap);
+    number=generateNumber();
     attempts=1;
     print('h1','Adivinhe o Número');
     print('p',`Chute um número entre 1 e ${gap}`);
