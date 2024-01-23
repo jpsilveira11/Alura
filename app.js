@@ -1,9 +1,49 @@
-let title=document.querySelector('h1');
-title.innerHTML='Adivinhe o Número';
-//let paragraph=document.getElementsByClassName('texto__paragrafo');
-let paragraph=document.querySelector('p');
-paragraph.innerHTML='Chute um número entre 1 e 10';
+const gap=10;
+let attempts;
+let number;
+
+newGame();
+
+function print(tag,content){
+    let element=document.querySelector(tag);
+    element.innerHTML=content;
+}
+
+function clearInput(){
+    field=document.querySelector('input');
+    field.value='';
+}
+
+function generateNumber(gap){
+    return parseInt(Math.random()*gap+1);
+}
 
 function verificarChute(){
-    
+    let answer=document.querySelector('input').value;
+    const biggerOrLower=answer>number? 'menor':'maior';
+    const feedback=attempts==1?'Você acertou em uma única tentativa!':`Você acertou em ${attempts} tentativas.`
+
+    if (answer==number){
+        print('h1','Parabéns!');
+        print('p',feedback);
+        document.querySelector('button').setAttribute('disabled',true);
+        document.getElementById('reiniciar').removeAttribute('disabled');
+    }else{
+        print('p',`O número é ${biggerOrLower} que ${answer}`)
+        attempts++;
+        clearInput();
+        }
+}
+
+function newGame(){
+    number=generateNumber(gap);
+    attempts=1;
+    print('h1','Adivinhe o Número');
+    print('p',`Chute um número entre 1 e ${gap}`);
+    document.querySelector('button').removeAttribute('disabled');
+    document.getElementById('reiniciar').setAttribute('disabled',true);
+}
+
+function reloadPage(){
+    location.reload();
 }
